@@ -16,12 +16,16 @@ public class Comanda {
         this.idComanda = idComanda;
         this.ventaAsociada = ventaAsociada;
         this.estado = PENDIENTE;
+        if (ventaAsociada == null || !ventaAsociada.isPagada()) {
+            System.out.println("[FALLA CAPTURADA] Solo se puede crear una comanda de una venta pagada. La comanda queda CANCELADA.");
+            this.estado = CANCELADO;
+        }
         java.time.LocalTime ahora = java.time.LocalTime.now();
         this.horaCreacion = String.format("%02d:%02d:%02d",
                 ahora.getHour(), ahora.getMinute(), ahora.getSecond());
     }
 
-    // Regla de negocio: los estados solo avanzan en orden
+   
     public boolean avanzarEstado() {
         if (estado.equals(PENDIENTE)) {
             this.estado = EN_PREPARACION;
